@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mapdemo.data.Data;
+import com.example.mapdemo.data.MarkerData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -90,9 +93,26 @@ public class MapDemoActivity extends AppCompatActivity {
             Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             MapDemoActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
             MapDemoActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
+
+            addMarker(map);
         } else {
             Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
+
+    }
+    void addMarker(GoogleMap googleMapT){
+
+
+        MarkerData markerData=new MarkerData();
+
+        for (int i=0;i<markerData.listMarker.size();i++){
+            Data data = markerData.listMarker.get(i);
+            LatLng TutorialsPoint = new LatLng(data.getLatitude(), data.getLongitude());
+            googleMapT.addMarker(new
+                    MarkerOptions().position(TutorialsPoint).title(data.getTitle()));
+            googleMapT.moveCamera(CameraUpdateFactory.newLatLng(TutorialsPoint));
+        }
+
     }
 
     @Override
